@@ -11,9 +11,9 @@ services:
                 UID: $UID
                 NGINX_VERSION: $NGINX_VERSION
         ports:
-            - "8005:80"
+            - "8000:80"
         volumes:
-                - ./public:/var/www/public:cached
+            - ./:/var/www
         depends_on:
             - php
 

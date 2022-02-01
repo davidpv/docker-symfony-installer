@@ -19,8 +19,6 @@ help: ## Show this help message
 init:
 	@make build
 	@make up
-	@make install-symfony
-	@make composer-install
 
 build:
 	UID=${UID} PHP_CONTAINER_NAME=${PHP_CONTAINER_NAME} NGINX_CONTAINER_NAME=${NGINX_CONTAINER_NAME}  NODE_VERSION=${NODE_VERSION} SYMFONY_VERSION=${SYMFONY_VERSION} PHP_VERSION=${PHP_VERSION} NGINX_VERSION=${NGINX_VERSION} docker-compose build --pull --force
@@ -31,8 +29,11 @@ up: ## Start the containers
 down: ## Stop the containers
 	UID=$UID docker-compose down --remove-orphans
 
-install-symfony: ## Stop the containers
+install-symfony: ## Installs symfony
 	docker exec -u appuser -it -e SYMFONY_VERSION=${SYMFONY_VERSION} ${PHP_CONTAINER_NAME} sh /var/www/docker/php/install_symfony.sh
+	@make composer-install
+#	yarn install
+#	yarn encore dev --watch
 
 ssh: ## ssh's into the PHP container
 	UID=$UID docker exec -it ${PHP_CONTAINER_NAME} bash

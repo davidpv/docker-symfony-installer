@@ -7,11 +7,26 @@ RUN mkdir /home/appuser/.ssh
 RUN chown -R appuser:appuser /home/appuser/
 RUN echo "StrictHostKeyChecking no" >> /home/appuser/.ssh/config
 
-RUN apt-get update
-#RUN apt-get install -y git zip libzip-dev libicu-dev openssl vim
-RUN apt-get install -y git libzip-dev
-#RUN docker-php-ext-install zip intl pdo_mysql
-RUN docker-php-ext-install zip
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libpng-dev \
+    libjpeg62-turbo-dev \
+    libfreetype6-dev \
+    locales \
+    zip \
+    jpegoptim optipng pngquant gifsicle \
+    vim \
+    unzip \
+    git \
+    curl \
+    libicu-dev
+
+#EXTENSIONS
+RUN docker-php-ext-install pdo_mysql exif pcntl
+RUN docker-php-ext-configure gd
+RUN docker-php-ext-install gd
+RUN docker-php-ext-install opcache
+RUN docker-php-ext-configure intl
 
 #COMPOSER
 RUN curl --insecure https://getcomposer.org/composer.phar -o /usr/bin/composer && chmod +x /usr/bin/composer
@@ -21,7 +36,7 @@ RUN pecl install xdebug && docker-php-ext-enable xdebug
 
 #SYMFONY CLI
 RUN echo "export COLUMNS=300" >> /home/appuser/.bashrc
-RUN echo "alias sf='/usr/local/bin/php /appdata/www/bin/console'" >> /home/appuser/.bashrc
+RUN echo "alias sf='/usr/local/bin/php /var/www/bin/console'" >> /home/appuser/.bashrc
 RUN curl -sS https://get.symfony.com/cli/installer | bash && mv /root/.symfony/bin/symfony /usr/local/bin/symfony
 #RUN symfony check:requirements
 

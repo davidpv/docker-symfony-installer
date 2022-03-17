@@ -32,3 +32,19 @@ services:
         volumes:
             - ./:/var/www
             - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini:delegated
+    ###> doctrine/doctrine-bundle ###
+    database:
+        container_name: ${DB_CONTAINER_NAME}
+        image: mariadb:${MARIADB_VERSION:-10.6}
+        environment:
+            MARIADB_USER: ${MARIADB_USER:-dbuser}
+            MARIADB_PASSWORD: ${MARIADB_PASSWORD:-dbuser}
+            MARIADB_ROOT_PASSWORD: ${MARIADB_PASSWORD:-root}
+            MYSQL_DATABASE: ${MARIADB_DATABASE:-app}
+        ports:
+            - "3306:3306"
+    ###< doctrine/doctrine-bundle ###
+
+    mailer:
+        image: schickling/mailcatcher
+        ports: [1025, 1080]

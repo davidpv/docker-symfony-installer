@@ -33,7 +33,7 @@ yarn:
 	yarn encore dev --watch
 
 stop: ## Stop the containers
-	UID=$UID docker-compose stop --remove-orphans
+	UID=$UID docker-compose stop
 
 down: ## Remove the containers
 	UID=$UID docker-compose down --remove-orphans

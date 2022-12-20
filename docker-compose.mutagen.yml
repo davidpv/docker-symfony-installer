@@ -1,0 +1,16 @@
+x-mutagen:
+  sync:
+    defaults:
+      ignore:
+        vcs: true
+        paths:
+          - '.idea'
+          - 'docker'
+    sf-code:
+      alpha: '.'
+      beta: 'volume://sf-code'
+      configurationBeta:
+        permissions:
+          defaultOwner: 'id:1000'
+          defaultGroup: 'id:1000'
+

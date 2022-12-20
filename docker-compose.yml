@@ -1,5 +1,8 @@
 version: '3.5'
 
+volumes:
+    sf-code:
+
 services:
 
     nginx:
@@ -13,7 +16,7 @@ services:
         ports:
             - "8000:80"
         volumes:
-            - ./:/var/www
+            - sf-code:/var/www
         depends_on:
             - php
 
@@ -30,7 +33,7 @@ services:
             XDEBUG_CONFIG: "mode=debug client_host=host.docker.internal client_port=9003 start_with_request=yes"
             PHP_IDE_CONFIG: "serverName=localhost"
         volumes:
-            - ./:/var/www
+            - sf-code:/var/www
             - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini:delegated
     ###> doctrine/doctrine-bundle ###
     database:

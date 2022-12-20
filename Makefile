@@ -19,8 +19,7 @@ help: ## Show this help message
 .SILENT: run
 
 init:
-	@make stop
-	@make up
+	@make restart
 
 build:
 	UID=${UID} MARIADB_VERSION=${MARIADB_VERSION} DB_CONTAINER_NAME=${DB_CONTAINER_NAME} PHP_CONTAINER_NAME=${PHP_CONTAINER_NAME} NGINX_CONTAINER_NAME=${NGINX_CONTAINER_NAME}  NODE_VERSION=${NODE_VERSION} SYMFONY_VERSION=${SYMFONY_VERSION} PHP_VERSION=${PHP_VERSION} NGINX_VERSION=${NGINX_VERSION} docker-compose build --pull
@@ -46,7 +45,7 @@ ssh: ## ssh's into the PHP container
 	UID=$UID docker exec -it ${PHP_CONTAINER_NAME} bash
 
 restart: ## Restart the containers
-	@make down
+	@make stop
 	@make up
 
 restart-php: ## Restart the php container

@@ -11,12 +11,12 @@ services:
         build:
             context: ./docker/nginx
             args:
-                UID: $UID
+                USER_ID: $USER_ID
                 NGINX_VERSION: $NGINX_VERSION
         ports:
             - "8000:80"
         volumes:
-            - sf-code:/var/www
+            - ./:/var/www
         depends_on:
             - php
 
@@ -26,14 +26,14 @@ services:
         build:
             context: docker/php
             args:
-                UID: $UID
+                USER_ID: $USER_ID
                 SYMFONY_VERSION: $SYMFONY_VERSION
                 PHP_VERSION: $PHP_VERSION
         environment:
             XDEBUG_CONFIG: "mode=debug client_host=host.docker.internal client_port=9003 start_with_request=yes"
             PHP_IDE_CONFIG: "serverName=localhost"
         volumes:
-            - sf-code:/var/www
+            - ./:/var/www
             - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini:delegated
     ###> doctrine/doctrine-bundle ###
     database:

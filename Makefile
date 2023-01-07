@@ -41,7 +41,7 @@ install-symfony: ## Installs symfony
 	docker exec -u appuser -it -e SYMFONY_VERSION=${SYMFONY_VERSION} ${PHP_CONTAINER_NAME} sh /var/www/docker/php/install_symfony.sh
 	@make composer-install
 
-ssh: ## ssh's into the PHP container
+console: ## ssh's into the PHP container
 	@USER_ID=$USER_ID docker exec -it ${PHP_CONTAINER_NAME} bash
 
 restart: ## Restart the containers

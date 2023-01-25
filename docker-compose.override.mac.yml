@@ -1,8 +1,5 @@
 version: '3.5'
 
-volumes:
-    sf-code:
-
 services:
 
     nginx:
@@ -33,7 +30,7 @@ services:
             XDEBUG_CONFIG: "mode=debug client_host=host.docker.internal client_port=9003 start_with_request=yes"
             PHP_IDE_CONFIG: "serverName=localhost"
         volumes:
-            - ./:/var/www
+            - sf-code:/var/www
             - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini:delegated
 
     ###> doctrine/doctrine-bundle ###
@@ -52,3 +49,26 @@ services:
     mailer:
         image: schickling/mailcatcher
         ports: [1025, 1080]
+
+
+x-mutagen:
+    sync:
+        defaults:
+            ignore:
+                vcs: true
+                paths:
+                    - '.idea'
+                    - 'vendor'
+        sf-code:
+            alpha: '.'
+            beta: 'volume://sf-code'
+            permissions:
+                defaultDirectoryMode: 0755
+                defaultFileMode: 0644
+            configurationBeta:
+                permissions:
+                    defaultOwner: id:${USER_ID:-1000}
+                    defaultGroup: id:${USER_ID:-1000}
+
+volumes:
+    sf-code:

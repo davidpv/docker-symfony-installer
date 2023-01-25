@@ -1,6 +1,6 @@
 #!/bin/bash
-SYMFONY_VERSION=6.2
-PHP_VERSION=8.2
+SYMFONY_VERSION=6.1
+PHP_VERSION=8.1
 NGINX_VERSION=1.21
 MARIADB_VERSION=10.10
 NGINX_CONTAINER_NAME=ddd-nginx
@@ -48,8 +48,9 @@ restart: ## Restart the containers
 	@make stop
 	@make up
 
-restart-php: ## Restart the php container
-	USER_ID=$USER_ID docker-compose restart ${PHP_CONTAINER_NAME}
+restart-mac: ## Restart the containers
+	@make stop
+	USER_ID=${USER_ID} MARIADB_VERSION=${MARIADB_VERSION} DB_CONTAINER_NAME=${DB_CONTAINER_NAME} PHP_CONTAINER_NAME=${PHP_CONTAINER_NAME} NGINX_CONTAINER_NAME=${NGINX_CONTAINER_NAME}  NODE_VERSION=${NODE_VERSION} SYMFONY_VERSION=${SYMFONY_VERSION} PHP_VERSION=${PHP_VERSION} NGINX_VERSION=${NGINX_VERSION} mutagen-compose up --build --detach
 
 composer-install: ## Installs composer dependencies
 	USER_ID=$USER_ID docker exec --user ${UID} -it ${PHP_CONTAINER_NAME} composer install --no-scripts --no-interaction --optimize-autoloader
